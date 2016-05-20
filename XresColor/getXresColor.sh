@@ -1,5 +1,9 @@
 #!/usr/bin/env  bash
 
+#
+# Copyright (c) 2016 Carlos Millett
+#
+
 case ${1,,} in
     *black)
         index="color0"
