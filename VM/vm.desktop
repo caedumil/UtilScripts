@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Virtualbox Remote Client
+Exec=/usr/local/bin/vm --notify
+Terminal=false
+Type=application
