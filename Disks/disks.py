@@ -76,7 +76,7 @@ command = ["rofi", "-dmenu", "-p", prompt] if which("rofi") else \
 with open("/etc/mtab") as arq:
     disks = [
         x.split(" ")[:2] for x in arq if
-        ("/dev/sd" in x and "/sda" not in x) or "/sr" in x
+        ("/dev/sd" in x and "/sda" not in x) or ("/sr" in x) or ("/mmcblk" in x)
     ]
 
 devs = {
