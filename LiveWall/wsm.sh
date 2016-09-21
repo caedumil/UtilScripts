@@ -20,8 +20,8 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
 
-if ! ( command -v =wget =feh >/dev/null 2>&1 ); then
-    print "Missing dependency... install WGET and FEH"
+if ! ( command -v \wget \feh >/dev/null 2>&1 ); then
+    echo "Missing dependency... install WGET and FEH"
     exit 1
 fi
 
