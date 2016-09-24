@@ -49,7 +49,7 @@ class Media():
         return
 
     def umount(self):
-        command = [ "devmon", self.action, self.devpath ]
+        command = [ "devmon", self.action, self.mountpoint ]
         try:
             p.check_call(command)
             return True
