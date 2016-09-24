@@ -65,18 +65,26 @@ parser.add_argument("-u", "--umount", action="store_true",
     help="unmount devices")
 args = parser.parse_args()
 
-notify2.init("Media")
-
 safe = []
 fail = []
 prompt = "Media - unmount:" if args.umount else "Media - open:"
 command = ["rofi", "-dmenu", "-p", prompt] if which("rofi") else \
     ["dmenu", "-p", prompt]
 
+mountpts = [
+        "/media/{0}".format(os.getenv("USER"))
+    ,   "/media"
+    ,   "/run/media/{0}".format(os.getenv("USER"))
+]
+for mpt in mountpts:
+    if os.path.exists(mpt):
+        mountpt = mpt
+        break
+
 with open("/etc/mtab") as arq:
     disks = [
         x.split(" ")[:2] for x in arq if
-        ("/dev/sd" in x and "/sda" not in x) or ("/sr" in x) or ("/mmcblk" in x)
+        ("/media/{0}".format(os.getenv("USER")) in x)
     ]
 
 devs = {
