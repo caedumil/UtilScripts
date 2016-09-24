@@ -105,15 +105,19 @@ if len(pick) > 0 and args.umount:
             fail.append(devs[x].label)
 
     if safe:
+        notify2.init("Media")
         message = " - ".join(safe)
         safe_pop = notify2.Notification("Safe to remove", message, "")
         safe_pop.show()
+        notify2.uninit()
 
     if fail:
+        notify2.init("Media")
         message = " - ".join(fail)
         fail_pop = notify2.Notification("Failed", message, "")
         fail_pop.set_urgency(notify2.URGENCY_CRITICAL)
         fail_pop.show()
+        notify2.uninit()
 
 elif len(pick) == 1:
     devs[pick[0]].explore()
