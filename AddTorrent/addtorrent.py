@@ -21,10 +21,13 @@
 #SOFTWARE.
 
 import os
+import re
 import sys
-import notify2          # python-notify2
-import subprocess
 import configparser
+
+import notify2
+import transmissionrpc
+
 
 config = os.environ.get("XDG_CONFIG_HOME")
 if not config:
@@ -39,9 +42,12 @@ server = opts.get("default", "SERVER")
 user = opts.get("default", "USER")
 passw = opts.get("default", "PASSW")
 
+
 magnet = sys.argv[-1]
 
-cmd = ['transmission-remote', server, '-n', "{}:{}".format(user, passw), '-a', magnet]
+
+transmission = transmissionrpc.Client(server, user=user, password=passw)
+
 
 notify2.init("Torrent")
 summary = "Add"
@@ -49,13 +55,15 @@ text = "Connecting to server"
 bubble = notify2.Notification(summary, text, "")
 bubble.show()
 
+
 try:
-    subprocess.check_output(cmd, universal_newlines=True)
-except subprocess.CalledProcessError as e:
-    out = e.output
-    summary, text = out.split(": ")
-else:
-    text = "Success!"
+    torrent = transmission.add_torrent(magnet)
+    text = torrent.name
+
+except transmissionrpc.error.TransmissionError as err:
+    summary = "Error"
+    text = re.findall('"(.*)"', err.message)[0]
+
 
 bubble.update(summary, text, "")
 bubble.show()
