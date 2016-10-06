@@ -57,24 +57,28 @@ user = opts.get(args.profile, "USER", fallback=None)
 passw = opts.get(args.profile, "PASSW", fallback=None)
 
 
-transmission = transmissionrpc.Client(server, port, user, passw)
-
-
-notify2.init("Torrent")
-summary = "Add"
-text = "Connecting to server"
-bubble = notify2.Notification(summary, text, "")
-bubble.show()
-
-
 try:
+    notify2.init("Torrent")
+    bubble = notify2.Notification("", "", "")
+
+    summary = "Connection"
+    transmission = transmissionrpc.Client(server, port, user, passw)
+    text = "Successful"
+    bubble.update(summary, text, "")
+    bubble.show()
+
     torrent = transmission.add_torrent(args.torrent)
+    summary = "Added"
     text = torrent.name
 
 except transmissionrpc.error.TransmissionError as err:
-    summary = "Error"
-    text = re.findall('"(.*)"', err.message)[0]
+    if "Request" in err.message:
+        text = err.message
 
+    else:
+        summary = "Error"
+        text = re.findall('"(.*)"', err.message)[0]
 
-bubble.update(summary, text, "")
-bubble.show()
+finally:
+    bubble.update(summary, text, "")
+    bubble.show()
