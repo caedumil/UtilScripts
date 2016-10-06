@@ -36,6 +36,10 @@ parser.add_argument(
     help="Define profile to read from config file."
 )
 parser.add_argument(
+    "-n", "--notify", action="store_true",
+    help="Use Desktop Notification for output."
+)
+parser.add_argument(
     "torrent", metavar="TORRENT", type=str,
     help="torrent/magnet link to add to transmission."
 )
@@ -58,14 +62,7 @@ passw = opts.get(args.profile, "PASSW", fallback=None)
 
 
 try:
-    notify2.init("Torrent")
-    bubble = notify2.Notification("", "", "")
-
-    summary = "Connection"
     transmission = transmissionrpc.Client(server, port, user, passw)
-    text = "Successful"
-    bubble.update(summary, text, "")
-    bubble.show()
 
     torrent = transmission.add_torrent(args.torrent)
     summary = "Added"
@@ -73,6 +70,7 @@ try:
 
 except transmissionrpc.error.TransmissionError as err:
     if "Request" in err.message:
+        summary = "Connection"
         text = err.message
 
     else:
@@ -80,5 +78,10 @@ except transmissionrpc.error.TransmissionError as err:
         text = re.findall('"(.*)"', err.message)[0]
 
 finally:
-    bubble.update(summary, text, "")
-    bubble.show()
+    if args.notify:
+        notify2.init("Torrent")
+        bubble = notify2.Notification(summary, text, "")
+        bubble.show()
+
+    else:
+        print("{}: {}".format(summary, text))

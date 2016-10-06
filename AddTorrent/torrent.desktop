@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Torrent
-Exec=/usr/local/bin/addtorrent %u
+Exec=/usr/local/bin/addtorrent --notitfy %u
 MimeType=application/x-bittorrent;x-scheme-handler/magnet
 Terminal=true
 Type=application
