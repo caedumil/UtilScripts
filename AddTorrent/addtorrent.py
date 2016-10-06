@@ -23,10 +23,23 @@
 import os
 import re
 import sys
+import argparse
 import configparser
 
 import notify2
 import transmissionrpc
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    "-p", "--profile", type=str, default="default",
+    help="Define profile to read from config file."
+)
+parser.add_argument(
+    "torrent", metavar="TORRENT", type=str,
+    help="torrent/magnet link to add to transmission."
+)
+args = parser.parse_args()
 
 
 config = os.environ.get("XDG_CONFIG_HOME")
@@ -38,15 +51,13 @@ config = os.path.join(config, "addtorrent.conf")
 opts = configparser.ConfigParser()
 opts.read(config)
 
-server = opts.get("default", "SERVER")
-user = opts.get("default", "USER")
-passw = opts.get("default", "PASSW")
+server = opts.get(args.profile, "SERVER", fallback="localhost")
+port = opts.get(args.profile, "PORT", fallback="9091")
+user = opts.get(args.profile, "USER", fallback=None)
+passw = opts.get(args.profile, "PASSW", fallback=None)
 
 
-magnet = sys.argv[-1]
-
-
-transmission = transmissionrpc.Client(server, user=user, password=passw)
+transmission = transmissionrpc.Client(server, port, user, passw)
 
 
 notify2.init("Torrent")
@@ -57,7 +68,7 @@ bubble.show()
 
 
 try:
-    torrent = transmission.add_torrent(magnet)
+    torrent = transmission.add_torrent(args.torrent)
     text = torrent.name
 
 except transmissionrpc.error.TransmissionError as err:
