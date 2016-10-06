@@ -80,7 +80,7 @@ except transmissionrpc.error.TransmissionError as err:
 finally:
     if args.notify:
         notify2.init("Torrent")
-        bubble = notify2.Notification(summary, text, "")
+        bubble = notify2.Notification(summary, text, "message-email")
         bubble.show()
 
     else:
