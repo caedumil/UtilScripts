@@ -1,6 +1,9 @@
 [Desktop Entry]
 Name=Torrent
-Exec=/usr/local/bin/addtorrent --notitfy %u
+Comment=Add torrent files/magnet links to transmission
+Exec=/usr/local/bin/addtorrent.py --notify %u
 MimeType=application/x-bittorrent;x-scheme-handler/magnet
 Terminal=true
 Type=application
+Categories=Network;
+Icon=transmission
