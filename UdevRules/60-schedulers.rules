@@ -1,2 +1,2 @@
-# set noop for non-rotating disks
-ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="noop"
+# set noop for USB devices.
+SUBSYSTEMS=="usb", ACTION=="add", KERNEL=="sd?", ATTR{queue/scheduler}="noop"
