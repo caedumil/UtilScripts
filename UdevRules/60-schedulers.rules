@@ -1,2 +1,0 @@
-# set noop for USB devices.
-SUBSYSTEMS=="usb", ACTION=="add", KERNEL=="sd?", ATTR{queue/scheduler}="noop"
