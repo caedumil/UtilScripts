@@ -23,12 +23,10 @@
 
 choice=$(echo -e -n "LOCK\nSLEEP\nLOGOUT\nREBOOT\nPOWEROFF\n" | rofi -dmenu -width 15 -lines 5)
 case ${choice} in
-    LOCK)
-        {
-            sleep 1 ;
-            ${HOME}/.local/bin/lock.sh ${HOME}/.config/Xlock.png ;
-        } &
-        ;;
+    SLEEP | LOCK)
+        sleep 1 ;
+        ${HOME}/.local/bin/lock.sh ${HOME}/.config/Xlock.png ;
+        ;;&
     SLEEP)
         {
             sleep 1 ;
