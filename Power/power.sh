@@ -21,33 +21,39 @@
 # SOFTWARE.
 
 
-choice=$(echo -e -n "LOCK\nSLEEP\nLOGOUT\nREBOOT\nPOWEROFF\n" | rofi -dmenu -width 15 -lines 5)
+choice=$(echo -e -n "LOCK\nSLEEP\nHIBERNATE\nLOGOUT\nREBOOT\nPOWEROFF\n" | rofi -dmenu -width 15 -lines 6)
 case ${choice} in
-    SLEEP | LOCK)
-        sleep 1 ;
-        ${HOME}/.local/bin/lock.sh ${HOME}/.config/Xlock.png ;
-        ;;&
-    SLEEP)
-        {
-            sleep 1 ;
-            systemctl suspend ;
-        } &
-        ;;
-    LOGOUT)
-        bspc quit
-        ;;
-    REBOOT)
-        {
-            notify-send --app-name power.sh 'REBOOT' '' ;
-            sleep 1 ;
-            systemctl reboot ;
-        } &
-        ;;
-    POWEROFF)
-        {
-            notify-send --app-name power.sh 'POWEROFF' '' ;
-            sleep 1
-            systemctl poweroff ;
-        } &
-        ;;
+	HIBERNATE | SLEEP | LOCK)
+		sleep 1 ;
+		${HOME}/.local/bin/lock.sh ${HOME}/.config/Xlock.png ;
+		;;&
+	SLEEP)
+		{
+			sleep 1 ;
+			systemctl suspend-then-hibernate ;
+		} &
+		;;
+	HIBERNATE)
+		{
+			sleep 1 ;
+			systemctl hibernate
+		} &
+		;;
+	LOGOUT)
+		bspc quit
+		;;
+	REBOOT)
+		{
+			notify-send --app-name power.sh 'REBOOT' '' ;
+			sleep 1 ;
+			systemctl reboot ;
+		} &
+		;;
+	POWEROFF)
+		{
+			notify-send --app-name power.sh 'POWEROFF' '' ;
+			sleep 1
+			systemctl poweroff ;
+		} &
+		;;
 esac
