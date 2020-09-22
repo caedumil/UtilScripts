@@ -21,8 +21,19 @@
 # SOFTWARE.
 
 
-choice=$(echo -e -n "Reload Session\nReload Hotkeys\nReload GTK\n" | rofi -dmenu -width 15 -lines 5)
+choice=$(echo -e -n "Toggle ScreenSaver\nReload Session\nReload Hotkeys\nReload GTK\n" | rofi -dmenu -width 15 -lines 5)
 case "${choice}" in
+    "Toggle ScreenSaver")
+        if xset -q | grep -o 'DPMS is Enabled' >/dev/null 2>&1 ; then
+            notify-send --app-name session.sh 'ScreenSaver' 'DISABLED'
+            xset s off
+            xset -dpms
+        else
+            notify-send --app-name session.sh 'ScreenSaver' 'ENABLED'
+            xset s 900
+            xset dpms 0 1200 1500
+        fi
+        ;;
     "Reload Session")
         bspc wm --restart
         ;;
