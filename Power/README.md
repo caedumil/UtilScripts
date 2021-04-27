@@ -19,3 +19,12 @@ All scripts use `rofi` to present a list of options to the user.
 - Reload Session
 - Reload HotKeys
 - Reload GTK
+
+
+## session.py
+
+- ScrenSaver
+- Bluetooth
+- Reload Session
+- Reload HotKeys
+- Reload GTK
